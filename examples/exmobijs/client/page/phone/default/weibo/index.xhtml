@@ -1,0 +1,31 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.nj.fiberhome.com.cn/exmobi.dtd">
+<html>
+<head>
+<meta charset="UTF-8"/>
+<title>微博示例</title>
+<script src="res:script/exmobijs/base.js"/>
+<script src="res:script/exmobijs/app.js"/>
+<script src="res:script/exmobijs/weibo.js"/>
+<script>
+<![CDATA[
+function clearBind(type){
+	$wb.init(type).clear();
+	$a.toast("解绑成功");
+}
+]]>
+</script>
+</head>
+<body>
+<listitem type="oneline" caption="发送微博" href="res:page/weibo/new.xhtml"></listitem>
+<listitem type="oneline" caption="新浪微博解绑" href="clearBind('sina')"/>
+<listitem type="oneline" caption="腾讯微博解绑" href="clearBind('tencent')"/>
+发送新浪/腾讯微博的前提是必须到新浪/腾讯开发者中心申请开发者账号，申请通过后会分配key、secret和redirecturl几个参数，需要配置到config.xml中，如下：
+<div>
+<![CDATA[
+    <tencentweibo key="801292142" secret="f5a0d823227e9561839b37144b481361" redirecturl="http://app.tongbu.com/10000403_exmobihd.html"/>
+    <sinaweibo key="3050909412" secret="cc03a010ca4773c4fbb5d9af01406537" redirecturl="http://weibo.com/u/2159849513"/>
+]]>
+</div>
+如果不设置的话，默认使用“ExMobi移动应用中间件”的名称发送。
+</body>
+</html>

@@ -1,0 +1,60 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.nj.fiberhome.com.cn/exmobi.dtd">
+<html>
+<head>
+<meta charset="UTF-8"/>
+<title>batch批处理实例</title>
+<style>
+a{color:red;}
+hr{margin:10 0;}
+.blue{color:blue;}
+</style>
+<script src="res:script/exmobijs/base.js"/>
+<script src="res:script/exmobijs/utility.js"/>
+<script src="res:script/exmobijs/app.js"/>
+<script src="res:script/exmobijs/db.js"/>
+<script src="res:script/exmobijs/validate.js"/>
+<script src="res:script/exmobijs/xpath.js"/>
+<script>
+<![CDATA[
+
+]]>
+</script>
+</head>
+<body>
+<div>
+	<input type="button" name="ipt" id="btn" value="这是一个id为btn，name为ipt的按钮对象"/>
+	<div id="box" style="border-size:1;border-radius:4;border-color:#cccccc;padding:10;">
+		这是一个id为box的div对象
+	</div>
+</div>
+<hr/>
+<div class="blue">$u.batch() 和  end()</div>
+这是一个动态界面批处理的方法，主要是解决多次对界面内容进行修改会多次刷新页面导致运行效率降低，使用该方法可以使所有页面变动一起生效，只需要刷新一次从而提高运行效率。
+一旦是用了批处理最红必须用end方法结束掉批处理，否则会导致界面不显示。比如
+<a href="$u.batch().hide('box').end()">$u.batch().hide('box').end()</a>
+如果是一次知道要修改的元素建议直接流水式操作，比如$u.batch().show('btn').hide('box').end();
+<br/>
+如果是不能在一次操作里全部修改，可以先定义一个变量获取批处理对象，然后对该对象操作，但是最后一定要end()结束，如：<br/>
+var batch = $u.batch();<br/>
+batch.hide("box");<br/>
+if($("btn").val()!=''){<br/>
+	batch.show("btn");<br/>
+}<br/>
+batch.end();
+<br/>为了方便，下面的例子均采用流水式操作。
+<hr/>
+<div class="blue">show(id or name,[id or name ...]) 和  hide(id or name,[id or name ...]) 和  toggle(id or name,[id or name ...])</div>
+这三个方法跟$里面的功能是一样的分别为显示、隐藏、反转一个对象的显示情况。不同的是里面需要传参数，可以有一个或多个参数，参数值必须为某个对象的id或者name，如：
+<a href="$u.batch().hide('box').show('btn').toggle('box','btn').end()">$u.batch().hide('box').show('btn').toggle('box','btn').end()</a>
+最终的结果是box显示，btn隐藏
+<hr/>
+<div class="blue">val(id or name,String) 和  addVal(id or name,String)、html(id or name,String) 和  addHtml(id or name,String)、width(id or name,String) 和 height(id or name,String)、src(id or name,String)</div>
+val/addVal/html/addHtml跟$中的功能一样，但是只有设值没有取值功能，val和html是修改值和innerHTML，addVal和addHtml是追加值和HTML。width和height是设置对象的宽度和高度。src是设置图片的地址。
+他们有个共同的特点就是都有两个参数，第一个参数可以是对象的id或者name，第二个参数是要设置的值。如：
+<a href="$u.batch().show('btn').val('btn','新按钮的值').addVal('btn','，这是追加的值').html('box','&lt;img id=\'img\'/&gt;').addHtml('box',',追加的innerHTML').width('btn','200').height('box','300').src('img','res:image/logo.png').end()">
+$u.batch().show('btn').val('btn','新按钮的值').addVal('btn','，这是追加的值').html('box','&lt;img id=\'img\'/&gt;').addHtml('box',',追加的innerHTML').width('btn','200').height('box','300').src('img','res:image/logo.png').end()
+</a>
+最终的结果是box显示，btn大小被修改
+<hr/>
+</body>
+</html>

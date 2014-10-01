@@ -1,0 +1,54 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.nj.fiberhome.com.cn/exmobi.dtd">
+<html>
+<head>
+<meta charset="UTF-8"/>
+<title>cache实例</title>
+<style>
+a{color:red;}
+hr{margin:10 0;}
+.blue{color:blue;}
+</style>
+<script src="res:script/exmobijs/base.js"/>
+<script src="res:script/exmobijs/utility.js"/>
+<script src="res:script/exmobijs/app.js"/>
+<script src="res:script/exmobijs/db.js"/>
+<script src="res:script/exmobijs/validate.js"/>
+<script src="res:script/exmobijs/xpath.js"/>
+<script>
+<![CDATA[
+	function doLoad(){
+		if($("isRemember").getCache()!=""){
+			$u.cache.get("username","password");
+		}	
+	}
+	
+	function doSubmit(){
+		//调用表单验证类校验表单
+		var v = $v.validate()
+					.add("username", "用户名不能为空！", "Require")
+					.add("password", "密码不能为空！", "Require")
+					.start();
+		//校验通过则进行cahce和登陆
+		if(v){
+			//记住用户名密码则将当前值存到cahce，setCache不传参即为存当前值
+			if($("isRemember").checked){
+				$u.cache.set("username","password","isRemember");
+			}else{//不记住密码则清空cache值，只要设置为空字符串即可
+				$u.cache.clear("username","password","isRemember");
+			}
+			//$("form").submit();
+		}
+	}
+]]>
+</script>
+</head>
+<body onload="doLoad()">
+<form id="form" action="yoururl" method="post">
+	<input type="text" name="username" prompt="请输入用户名"/>
+	<input type="password" name="password" prompt="请输入密码"/>
+	<switch name="isRemember"/>是否记住用户名和密码？
+	<br/>
+	<input type="button" onclick="doSubmit()" value="登陆"/>
+</form>
+</body>
+</html>

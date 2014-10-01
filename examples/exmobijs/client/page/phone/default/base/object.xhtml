@@ -1,0 +1,106 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.nj.fiberhome.com.cn/exmobi.dtd">
+<html>
+<head>
+<meta charset="UTF-8"/>
+<title>base类实例</title>
+<style>
+a{color:red;}
+hr{margin:10 0;}
+.blue{color:blue;}
+</style>
+<script src="res:script/exmobijs/base.js"/>
+<script src="res:script/exmobijs/utility.js"/>
+<script src="res:script/exmobijs/app.js"/>
+<script src="res:script/exmobijs/db.js"/>
+<script src="res:script/exmobijs/validate.js"/>
+<script src="res:script/exmobijs/xpath.js"/>
+<script>
+<![CDATA[
+
+]]>
+</script>
+</head>
+<body>
+<div>
+	<input type="button" name="ipt" id="btn" value="这是一个id为btn，name为ipt的按钮对象"/>
+	<div id="box" style="border-size:1;border-radius:4;border-color:#cccccc;padding:10;">
+		这是一个id为box的div对象
+	</div>
+</div>
+<hr/>
+<div class="blue">$(id OR name OR Object)</div>
+base类最核心的是$的封装，$代表一个控件对象，通过id即
+<a href="alert($('btn'))">$('btn')</a>
+或者name即
+<a href="alert($('ipt'))">$('ipt')</a>
+或者Object即
+<a href="alert($(document.getElementById('btn')))">$(document.getElementById('btn'))</a>
+都可以获取控件对象及其类型
+<hr/>
+<div class="blue">show() and hide() and toggle()</div>
+可以使用
+<a href="$('ipt').hide()">$('div').hide()</a>
+隐藏对象,使用
+<a href="$('ipt').show()">$('div').show()</a>
+显示对象，使用
+<a href="$('ipt').toggle()">$('div').toggle()</a>
+反转对象的显示情况，比如原来是显示的则反转为隐藏
+<hr/>
+<div class="blue">val() and val(String) and addVal(String)</div>
+可以使用
+<a href="alert('我的值是：'+$('btn').val())">$('btn').val()</a>
+不传参数获取对象的value值,使用
+<a href="$('btn').val('这是新的value值');alert('新的值是：'+$('btn').val())">$('btn').val('这是新的value值')</a>
+传参给对象设置value值，使用
+<a href="$('btn').addVal('，这是追加的value值');alert('追加后的值是：'+$('btn').val())">$('btn').addVal('，这是追加的value值')</a>
+传参给对象追加value值
+<hr/>
+<div class="blue">html() and html(String) and addHtml(String)</div>
+可以使用
+<a href="alert('我的innerHTML是：'+$('box').html())">$('box').html()</a>
+不传参数获取对象的innerHTML值,使用
+<a href="$('box').html('这是新的innerHTML值');alert('新的值innerHTML是：'+$('box').html())">$('box').html('这是新的innerHTML值')</a>
+传参给对象设置innerHTML值，使用
+<a href="$('box').addHtml('，这是追加的innerHTML值');alert('追加后的innerHTML是：'+$('box').html())">$('box').addHtml('，这是追加的innerHTML值')</a>
+传参给对象追加innerHTML值
+<hr/>
+<div class="blue">attr(attrName,attrValue)</div>
+可以使用
+<a href="alert($('btn').attr('name'))">$('btn').attr('name')</a>
+获取输入框的name属性的值，
+可以使用
+<a href="alert($('btn').attr('value', 'aaa').attr('value'))">$('btn').attr('value', 'aaa')</a>
+修改输入框的value属性的值
+<hr/>
+<div class="blue">css(styleName,styleValue)</div>
+可以使用
+<a href="$('box').css('color', '#ab83e3')">$('box').css('color', '#ab83e3')</a>
+重置某个样式的值，这里重置的是color
+<hr/>
+<div class="blue">getCache() and setCache and getCache(String)</div>
+实现类似记住用户名密码的cache缓存功能。请看例子<br/>
+<a href="res:page/base/cache.xhtml">res:page/base/cache.xhtml</a>
+<hr/>
+<div class="blue">setSelected()</div>
+为selected、radio和checbox设置选中状态<br/>
+<a href="$('executor').setSelected('2')">点击此处改变下面select的选中值</a>
+<select name="executor" id="executor">
+	<option value="0">==请选择==</option>
+    <option value="1">李勇</option>
+    <option value="2">陶万鹏</option>
+    <option value="3">陈文胜</option>
+    <option value="4">梅璇</option>
+    <option value="5">黄清华</option>
+    <option value="6">郑桂端</option>		
+</select>
+<hr/>
+<div class="blue">原生String类型封装</div>
+请看例子
+<a href="res:page/base/string.xhtml">res:page/base/string.xhtml</a>
+<hr/>
+<div class="blue">原生Array类型封装</div>
+请看例子
+<a href="res:page/base/array.xhtml">res:page/base/array.xhtml</a>
+<hr/>
+</body>
+</html>

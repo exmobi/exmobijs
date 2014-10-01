@@ -1,0 +1,60 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.nj.fiberhome.com.cn/exmobi.dtd">
+<html>
+<head>
+<meta charset="UTF-8"/>
+<title>展现类数据的缓存</title>
+<script src="res:script/exmobijs/base.js"/>
+<script src="res:script/exmobijs/utility.js"/>
+<script src="res:script/exmobijs/app.js"/>
+<script>
+<![CDATA[
+//这里的"username".session()是把用户名作为key的一部分，确保不同的用户访问的列表页面的缓存是自己的
+var key = "username".session()+"listData1"; 
+
+
+function doLoad(){
+	
+	//从缓存中读取数据
+	var listData = $u.icache(key);
+	if(listData){
+		//如果已经请求过网络会有缓存，可以直接注入显示
+		$("listDiv").clear().provide(listData);
+	}else{
+		//第一次请求没有缓存，则请求网络
+		$a.go("http://domain/app/template/action/taskManagerAction.jsp?handler=list&dataType=json&timeStamp=1340799867590", "post", '{"page":1,"rows":5}', doSuccess, null, '{"Content-Type": "multipart/form-data"}', true);
+	}	
+}
+
+function doSuccess(data){
+	var listData = data.responseText.toJSON();
+	if(listData.length==0){
+		return;
+	}
+	$("listDiv").clear().provide(listData);
+	//请求成功后设置缓存
+	$u.icache(key, $u.transObj(listData));
+}
+
+function doFresh(){
+	//重新刷新数据
+	$a.go("http://domain/app/template/action/taskManagerAction.jsp?handler=list&dataType=json&timeStamp=1340799867590", "post", '{"page":1,"rows":5}', doSuccess, null, '{"Content-Type": "multipart/form-data"}', true);
+}
+]]>
+</script>
+</head>
+<body onload="doLoad()">
+<div>
+展现类数据的缓存思路是：<br/>
+1、采用$u.cache的缓存存取的能力<br/>
+2、存储的格式为JSON格式<br/>
+3、展示的时候使用provide注入<br/>
+</div>
+<hr/>
+<div id="listDiv">
+	<listitem type="twoline" caption="${title}" sndcaption="${end_time}"/>
+</div>
+</body>
+<footer>
+	<input type="button" value="刷新" style="width:100%;" onclick="doFresh()"/>
+</footer>
+</html>

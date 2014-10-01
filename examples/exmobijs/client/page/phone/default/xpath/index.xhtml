@@ -1,0 +1,74 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.nj.fiberhome.com.cn/exmobi.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="charset=utf-8"/>
+<title>xpath类实例</title>
+<style>
+a{color:red;}
+hr{margin:10 0;}
+.blue{color:blue;}
+</style>
+<script src="res:script/exmobijs/base.js"/>
+<script src="res:script/exmobijs/utility.js"/>
+<script src="res:script/exmobijs/app.js"/>
+<script src="res:script/exmobijs/db.js"/>
+<script src="res:script/exmobijs/validate.js"/>
+<script src="res:script/exmobijs/xpath.js"/>
+<script>
+<![CDATA[	
+	function doClick(){
+		var xml = '<root>'+
+					'<person id="p1">'+
+						'<name id="a1">nandy</name>'+
+						'<name id="c1">wong</name>'+
+						'<age>27</age>'+
+					'</person>'+
+					'<person>'+
+						'<name id="b2">tom</name>'+
+					'</person>'+
+					'<person>'+
+						'<name id="a3">lilei</name>'+
+						'<age>24</age>'+
+					'</person>'+
+				'<root>';
+		xml = $x(xml);
+		
+    	//var names = xml.find("person/name").filter(/id=.b/g);
+    	//var names = xml.find("#p1").find("name");
+    	//var names = xml.find("person").get(1).children(); 
+    	var names = xml.find("person/name").match(/id=.a/g);
+
+    	/*尝试用下面获取的内容替代上面的names
+    	var names = xml.find("#p1").find("name");
+    	var names = xml.find("person").get(1).children(); 
+    	var names = xml.find("person/name").match(/id=.a/g);
+    	*/
+    	for(var i=0;i<names.length();i++){
+    		var name = names.get(i);
+    		alert(name.attr("id")+" "+name.val());
+    	}
+	}     
+
+]]>
+</script>
+</head>
+
+<body>
+<div class="blue">
+	xpath类通过$x(XMLString or XMLPATH)来创建一个XML对象，该类目前只支持简单格式的XML的读取，不能写，所以要求数据要经过JSP过滤转换后返回一个较规律的XML进行操作
+</div>
+<hr/>
+第一步：通过<font color="red">find(路径   or #id)</font><font color="red">或者children()</font>获取数据，只能对单个元素使用
+<hr/>
+第二步：可以通过<font color="red">filter(Regex)</font>或者<font color="red">match(Regex)</font>过滤数据，只能对数组使用，此步骤不是必须
+<hr/>
+第三步：可以通过<font color="red">length()</font>循环这些数据，通过<font color="red">get(index)</font>获取想要的对象，只能对数组使用，
+<hr/>
+第四步：通过<font color="red">attr(属性名)</font>获取属性、<font color="red">val()</font>获取文本内容、<font color="red">tagName()</font>获取对象的标签名，只能对单个元素使用
+<br/>
+或者继续第一步递归取下面的对象。
+<hr/>
+<input type="button" value="点击执行效果" onclick="doClick()" style="width:100%"/>
+</body>
+
+</html>

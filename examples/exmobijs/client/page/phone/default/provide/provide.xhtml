@@ -1,0 +1,101 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.nj.fiberhome.com.cn/exmobi.dtd">
+<html>
+<head>
+<meta charset="UTF-8"/>
+<title>ExMobiJS实例</title>
+<script src="res:script/exmobijs/base.js"/>
+<script src="res:script/exmobijs/app.js"/>
+<script src="res:script/exmobijs/utility.js"/>
+<script>
+<![CDATA[
+	function doLoad(){
+
+		getFromJSON();
+		getFromAjax();
+	}
+	
+	//从JSON注入数据
+	function getFromJSON(){
+		//var batch = $u.batch();
+		//给列表动态注入JSON数据
+		var itemData = '[{"title":"任务1", "end_time":"2012-09-01"}, {"title":"任务2", "end_time":"2012-06-22"}, {"title":"任务3", "end_time":"2012-05-05"}]';
+		//$("itemDiv").setTemplate('<div><div style="width:50%">${title}</div><div style="width:50%">${end_time}</div></div><hr/>');
+		$("itemDiv").provide(itemData).show();	
+		//$("itemDiv").html("").provide(itemData).show();	
+		$("listDiv").provide(itemData).show();	
+		//给表单动态注入JSON数据
+		//$("formDiv").callBack("onSuccess");//设置注入后的回调函数
+		var formData = '{"title":"任务1", "begin_time":"2012-02-01", "end_time":"2012-06-22", "executor":"陈文胜", "priority_level":"急", "cc":"工程,规划", "remark":"111", "aaaa":["11","22"]}';
+		$("formDiv").provide(formData).show();	
+		
+		//$("formDiv").html( $("formDiv").html().tjt(formData) );
+		//var template = '<listitem caption="${caption}"/>';
+		//$("formDiv").html( template.tjt(formData) );
+		//batch.end();
+	}
+	
+	//从Ajax注入数据
+	function getFromAjax(){
+		//var batch = $u.batch();
+		//给列表动态注入Ajax数据
+		$("itemDiv").clear().provide("http://domain/app/template/action/taskManagerAction.jsp?handler=list&dataType=json&timeStamp=1340799867590", "post", '{"page":1,"rows":5}', '{"Content-Type": "multipart/form-data"}', true).show();	
+		$("listDiv").provide("http://domain/app/template/action/taskManagerAction.jsp?handler=list&dataType=json&timeStamp=1340799867590", "post", '{"page":1,"rows":5}', '{"Content-Type": "multipart/form-data"}', true).show();	
+	
+		//给表单动态注入Ajax数据
+		//$("formDiv").callBack("onSuccess");//设置注入后的回调函数
+		$("formDiv").clear().provide("http://sql/getFirstData.jsp", "get", '', '', true).show();		
+		//batch.end();
+	}
+	
+	function onSuccess(data){
+		var hidden = data.responseText.toJSON().hidden;
+		$("hidden").setTemplate("<input type='hidden' name='${name}' value='${value}'/>");
+		$("hidden").provide(hidden).show();
+	}
+]]>
+</script>
+</head>
+<body onload="doLoad()">
+<div style="color:red;background-click-color:#ff0000;">所有要注入的数据一律以${json[属性]}包住，包住的值对应返回的JSON对象的一个属性，比如要给caption属性注入一个JSON中存在的属性caption，可以这么写caption="${caption}"。如果是有选中状态的控件，需要在${}中使用表达式。</div>
+<div style="color:blue;">这是一个用div拼的item</div>
+<div id="itemDiv" style="display:none;">
+<div><div style="width:50%">${title}</div><div style="width:50%">${end_time}</div></div><hr/>
+</div>
+<div style="color:blue;">这是直接用listitem控件的item</div>
+<div id="listDiv" style="display:none;">
+	<listitem type="twoline" caption="${title}" sndcaption="${end_time}"/>
+</div>
+<div style="color:blue;">这是一个表单</div>
+<div id="formDiv" style="display:none;">
+	<form id="form" action="http://sql/insert.jsp" method="post" target="_self">
+		<div>标题：</div>
+		<input type="text" id="title" name="title" value="${title}"/>		
+		<div>开始时间：</div>
+		<object type="date" id="begin_time" name="begin_time" value="${begin_time}" style="width:100%"/>		
+		<div>结束时间：</div>		
+		<object type="date" id="end_time" name="end_time" value="${end_time}" style="width:100%"/>	
+		<div>任务执行人：</div>
+		<select name="executor" id="executor">
+        	<option >==请选择==</option>
+            <option value="${selected.executor='李勇'}">李勇</option>
+            <option value="${selected.executor='陶万鹏'}">陶万鹏</option>
+            <option value="${selected.executor='陈文胜'}">陈文胜</option>
+            <option value="${selected.executor='梅璇'}">梅璇</option>
+            <option value="${selected.executor='黄清华'}">黄清华</option>
+            <option value="${selected.executor='郑桂端'}">郑桂端</option>
+		</select>	
+		<div>优先级：</div>
+		<input type="radio" name="priority_level" value="${checked.priority_level='一般'}" caption="一般"/>	
+		<input type="radio" name="priority_level" value="${checked.priority_level='急'}" caption="急"/>	
+		<input type="radio" name="priority_level" value="${checked.priority_level='很急'}" caption="很急"/>	
+		<div>抄送部门：</div>
+		<input type="checkbox" name="cc" value="${checked.cc='工程'}" caption="工程"/>	
+		<input type="checkbox" name="cc" value="${checked.cc='研发'}" caption="研发"/>	
+		<input type="checkbox" name="cc" value="${checked.cc='规划'}" caption="规划"/>	
+		<div>任务说明：</div>
+		<div id="aa"></div>
+		<input type="text" name="remark" value="${remark}"/>
+	</form>
+</div>
+</body>
+</html>

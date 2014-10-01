@@ -1,0 +1,140 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.nj.fiberhome.com.cn/exmobi.dtd">
+<html>
+<head>
+<meta charset="UTF-8"/>
+<title>动态树实例</title>
+<style>
+a{color:red;}
+hr{margin:10 0;}
+.blue{color:blue;}
+</style>
+<script src="res:script/exmobijs/base.js"/>
+<script src="res:script/exmobijs/utility.js"/>
+<script src="res:script/exmobijs/tree.js"/>
+<script>
+<![CDATA[
+	var tree;
+	function doLoad(){
+		tree = $tree("tree");
+		//json格式为对象数组，如：[{"id":"当前节点id","pId":"父节点id","text":"显示的文本","value":"有checkbox时提交的值","href":"点击文本触发的事件","collapsehref":"点击加减号触发的事件"}]
+		//但是对象的属性可以是任意的treeitem的属性，如checkbox、target等
+		var json = [
+		            {"id":"1","pId":"tree","text":"node1","value":"","href":"","collapsehref":"", "iscollapse":true},
+		            {"id":"3","pId":"2","text":"node3","value":"","href":"alert('i am node3')","collapsehref":""},
+		            {"id":"2","pId":"tree","text":"node2","value":"","href":"","collapsehref":"", "checkbox":"false"},
+		           ];
+		//可以直接load以json生成树节点，返回的是一个树节点信息的json数组
+		tree.load(json);
+	}
+	
+	function newChild(){
+		var id = "1";
+		
+		//以id值判断对应的节点及其子节点是否存在		
+		if(tree.get(id)&&tree.get(id).hasChild()) return;
+		
+		/*
+		给某个节点添加子节点有3个函数
+		1、tree.append();该函数是通过已知父节点的id来添加节点，需要搭配tree.show()使用才能生效，返回的是一个json，包含添加节点的信息
+			该函数的参数有两种：
+			一种是传一个json对象，该对象的每一个key和value除了pId，其他都可以是treeitem的任一属性及其要设置的值，形如：
+			tree.append({"id":"12", "pId":id, "text":"node12", "checkbox":"true"});
+			另一种是顺序传入6个固定参数："当前节点id（可为空串）", "父节点id", "显示的文本", "有checkbox时提交的值", "点击文本触发的事件", "点击加减号触发的事件"
+			形如：
+			tree.append("4", id, "node4", "", "", "");
+			
+			tree.show();
+		2、treeitem.child();该函数是通过已知树节点，给树节点添加子节点，所以参数中不需要设置父节点id，调用直接生效，返回的是一个treeitem对象
+			该函数的参数有两种：
+			一种是传入一个json对象，该对象的每一个key和value都可以是treeitem的任一属性及其要设置的值，形如：
+			item.child({"id":"10", "text":"node13", "checkbox":"true"});
+			另一种是顺序存入5个参数"子节点id（可为空串）", "显示的文本", "有checkbox时提交的值", "点击文本触发的事件", "点击加减号触发的事件"
+			形如：
+			item.child("11", "node11", "", "", "");
+		3、tree.load();该函数既可以给任意节点加节点，当然也可以为某个节点添加子节点
+			其参数只有一种，就是传入一个json对象数组，每一项数组的对象中每一个key和value除了pId，其他都可以是treeitem的任一属性及其要设置的值，形如：
+			var json = [
+			            {"id":"7","pId":id,"text":"node7","value":"","href":"alert('i am node7')","collapsehref":""},
+			            {"id":"8","pId":id,"text":"node8","value":"","href":"alert('i am node8')","collapsehref":""},
+			            {"id":"9","pId":id,"text":"node9","value":"","href":"alert('i am node9')","collapsehref":""},
+			           ];
+			tree.load(json);
+		*/		
+		
+
+		//通过append一个json对象参数添加节点，未生效
+		tree.append({"id":"12", "pId":id, "text":"node12", "checkbox":"true"});		
+		//通过append六个参数添加节点，未生效
+		tree.append("4", id, "node4", "", "", "");		
+		//append会返回一个json节点信息对象，未生效
+		var item = tree.append({"id":"", "pId":id, "text":"node rnd"});
+		//所以可以从该json对象中获取其中的id等属性作为他用，未生效
+		tree.append({"id":"13", "pId":item.id, "text":"node13"});		
+		//append方法最后一定要使用show方法否则不会生成节点，调用后上面append的节点立即生效
+		tree.show();
+		
+		//或者可以与child混用
+		tree.get(item.id).child({"id":"16", "text":"node16"});
+		
+		//重新设置id
+		id = "3";
+		//通过id获取某个节点对象
+		var item = tree.get(id);
+		//通过child传一个json对象参数添加子节点，立即生效
+		item.child({"id":"10", "text":"node13", "checkbox":"true"});
+		//通过child传五个参数添加子节点，立即生效
+		item.child("11", "node11", "", "", "");
+		//child会返回一个treeitem对象，立即生效
+		var curItem = item.child({"id":"", "text":"node rnd"});
+		//所以可以对该对象继续操作，立即生效
+		curItem.child({"id":"15", "text":"node15"});
+		//也可以与append混用，为生效
+		tree.append({"id":"17", "pId":curItem.id, "text":"node17"});
+		tree.show();//调用后方生效
+		
+		//重置id
+		id = "2";
+		if(tree.get(id)&&tree.get(id).hasChild()) return;
+		var json = [
+		            {"id":"7","pId":id,"text":"node7","value":"","href":"alert('i am node7')","collapsehref":""},
+		            {"id":"8","pId":id,"text":"node8","value":"","href":"alert('i am node8')","collapsehref":""},
+		            {"id":"9","pId":id,"text":"node9","value":"","href":"alert('i am node9')","collapsehref":""},
+		           ];
+		//通过load加载子节点，立即生效
+		tree.load(json);
+		
+	}
+	
+	
+	function removeNode(){
+		var id = "3";
+		//清除子节点
+		tree.get(id).clear();
+		id = "2";
+		//清除当前节点
+		tree.get(id).remove();
+	}
+
+	
+	function getNativeNode(){
+		//这个得到的时候一个原生的treeitem对象，不能使用item.child()、item.remove()等封装的方法
+		var item = document.getElementById("tree").getTreeItemById("0");
+		//可以通过如下转换使用
+		item = tree.get(item);
+		item.child({"id":"18", "text":"node18"});
+	}
+
+]]>
+</script>
+</head>
+<header>
+<a href="newChild()">给节点添加子节点方法</a>
+<a href="removeNode()">删除子节点的方法</a>
+<a href="getNativeNode()">将原生treeitem对象转为封装的treeiten对象</a>
+</header>
+<body onload="doLoad()">
+<tree id="tree" caption="根节点" iconleaf="res:image/icon_photo4.png">
+	<item id="0" caption="灵芝"/>
+</tree>
+</body>
+</html>

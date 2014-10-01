@@ -1,0 +1,35 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.nj.fiberhome.com.cn/exmobi.dtd">
+<html>
+<head>
+<meta charset="UTF-8"/>
+<title>ExMobiJS实例</title>
+<script src="res:script/exmobijs/base.js"/>
+<script src="res:script/exmobijs/app.js"/>
+<script src="res:script/exmobijs/utility.js"/>
+<script>
+<![CDATA[
+	function doLoad(){
+		getFromAjax();
+	}
+
+	
+	//从Ajax注入数据
+	function getFromAjax(){
+		//provide的第6个参数即为是否启用缓存，false为不启用，true为启用（缓存的key为url），默认是不启用，如果填写的是字符串，也为启用，缓存的key即为该字符串
+		//可以通过$u.icache(key)在其他函数里获取设置的缓存
+		//可以尝试把第三个参数的rows由5变成10再变成5可以看到效果
+		$("listDiv").provide("http://domain/app/template/action/taskManagerAction.jsp?handler=list&dataType=json&timeStamp=1340799867590", "post", '{"page":1,"rows":5}', '{"Content-Type": "multipart/form-data"}', false, true).show();	
+
+	}
+
+]]>
+</script>
+</head>
+<body onload="doLoad()">
+
+<div id="listDiv" style="display:none;">
+	<listitem type="twoline" caption="${title}" sndcaption="${end_time}"/>
+</div>
+
+</body>
+</html>

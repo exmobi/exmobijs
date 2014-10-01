@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<config clientversion="4" scope="client">
+    <appid>exmobijs</appid>
+    <appname>exmobijs框架</appname>
+    <description></description>
+    <version>1.2.2</version>
+    <date>2012-11-03</date>
+    <homepage src="res:page/index.xhtml"/>
+    <faultconfig src=""/>
+    <vendor url="http://weibo.com/nandy007" email="huangnan@nj.fiberhome.com.cn">@黄楠nandy</vendor>
+    <access network="true" gps="true" camera="true" certificate="true"/>
+    <icon selectedlogo="res:image/selectedlogo.png" main="res:image/main.png" logo="res:image/logo.png"/>
+</config>

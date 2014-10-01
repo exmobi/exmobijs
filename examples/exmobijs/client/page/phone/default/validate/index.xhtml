@@ -1,0 +1,132 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.nj.fiberhome.com.cn/exmobi.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="charset=utf-8"/>
+<title>validate类实例</title>
+<script src="res:script/exmobijs/base.js"/>
+<script src="res:script/exmobijs/utility.js"/>
+<script src="res:script/exmobijs/app.js"/>
+<script src="res:script/exmobijs/db.js"/>
+<script src="res:script/exmobijs/validate.js"/>
+<script src="res:script/exmobijs/xpath.js"/>
+<script>
+<![CDATA[	
+    //单项验证
+    function match(){
+    	$v.validate(1).match("title","标题长度必须大于3或者小于8","Limit","4|7");
+    	//$v.validate().match("title","标题长度必须大于3或者小于8","Limit","4|7");
+    	//alert($("title").val().is("Require"));
+    }
+    
+	function doSubmit(){
+		$v.regUsername = /^[A-Za-z0-9\u0391-\uFFE5]+$/;//汉字字母数字，可以自定义增加校验项
+		var v = $v.validate()//默认alert提示
+				.add("title","请输入标题","Require")
+				.add("title","用户名只能输入汉字字母数字","regUsername")//使用自定义校验项
+				.add("type","类型必须选择一项","Require")
+				.add("read","可传阅部门至少勾选一项，最多选两项","Checked","1|2")
+				.add("leval","紧急程度必须勾选一项","Checked")
+				.add("file","请选择文件","Require")
+				.add("file","请选择doc或者txt文件","Accept","doc|txt")
+				.add("area","请填写所属区域","Require")
+				.add("public","请填写正确时间","Require")
+				//.add("public","请填写发布时间","Date")
+				.add("isPublic","请选择是否发布","Checked")   		
+        		.start();
+       	if(v) alert("校验成功！");
+	}     
+	
+	function doSubmit1(){
+		var v = $v.validate(1)//1为通过toast提示
+				.add("title","请输入标题","Require")
+				//.add("title","标题至少要大于等于4个字","Limit","4")
+        		.add("type","类型必须选择一项","Require")
+        		.add("read","可传阅部门至少勾选一项，最多选两项","Checked","1|2")
+        		.add("leval","紧急程度必须勾选一项","Checked")
+        		.add("file","请选择文件","Require")
+        		.add("file","请选择doc或者txt文件","Accept","doc|txt")
+        		.add("area","请填写所属区域","Require")
+        		.add("public","请填写正确时间","Require")
+        		.add("public","请填写发布时间","Date")
+        		.add("isPublic","请请选择发布","Checked")
+        		.start();
+       	if(v) alert("校验成功！");
+	}  
+	/**
+	目前支持以下校验，add方法的第一个参数是对象的name或者id，第二个参数是提示语，第三个参数是校验类型，即下面冒号前的字符串，
+	第四个参数是下面冒号后面不是正则表达式的，即是方法的，并且方法中需要有ps，即需要传参的，多个参数用|连接,如Limit只校验最小值可以只写4，如果是限制最小4最大8,，则写4|8
+	正则验证已经涵盖大部分校验，所以第四个参数不常用，以下面注释"//函数判断"分界，往上都是正则不需要第四个参数，往下是函数，都需要第四个参数，如有需要可以修改正则表达式
+	
+	Require:/.+/,   //必填项，对radio、checkbox、tree等数组型不生效，可通过可选个数达到必填要求
+	Email:/^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/, //Email地址格式
+	Phone:/^((\(\d{2,3}\))|(\d{3}\-))?(\(0\d{2,3}\)|0\d{2,3}-)?[1-9]\d{6,7}(\-\d{1,4})?$/, //电话号码格式
+	Mobile:/^((\(\d{2,3}\))|(\d{3}\-))?1\d{10}$/,           //手机号码格式
+	Url:/^http:\/\/[A-Za-z0-9]+\.[A-Za-z0-9]+[\/=\?%\-&_~`@[\]\':+!]*([^<>\"\"])*$/,  //基于HTTP协议的网址格式
+	Currency:/^\d+(\.\d+)?$/,        //货币格式
+	Number:/^\d+$/,       //数字
+	Zip:/^[1-9]\d{5}$/,   //邮政编码
+	Integer:/^[-\+]?\d+$/,    //整数
+	Double:/^[-\+]?\d+(\.\d+)?$/,   //实数 	
+	English:/^[A-Za-z]+$/,          //英文
+	Chinese: /^[\u0391-\uFFE5]+$/, //中文
+	Username:/^[a-z]\w{3,}$/i,  //用户名
+	UnSafe:/^(([A-Z]*|[a-z]*|\d*|[-_\~!@#\$%\^&\*\.\(\)\[\]\{\}<>\?\\\/\'\"]*)|.{0,5})$|\s/,                                                       //安全密码
+	Date:/^(\d{1,4})(-|\/)(\d{1,2})\2(\d{1,2})/,                //日期	                                
+	//函数判断
+	MaxLength:"$v.isLength(obj.val(), item.ps)",  //最大长度
+	Ip:"$v.isIp(obj.val())",    //IP
+	Accept:"$v.isAccept(obj.val(), item.ps)",                                  //设置过滤，用于限制文件上传
+	Limit:"$v.isLimit(obj.val().length,item.ps)",              //限制输入长度
+	LimitByte:"$v.isLimit($v.lenByte(obj.val()), item.ps)",          //限制输入的字节长度
+	Custom:"$v.exec(obj.val(), item.ps)",       //自定义正则表达式验证,选择此项则表单元素的正则表达式在regexp属性里定义
+	Checked:"$v.isChecked(obj.name, item.ps)",      //验证单/多选按钮组
+	
+	*/
+]]>
+</script>
+</head>
+
+<body>
+<div>
+	标题(有onchange事件试试看)：<input type="text" name="title" value="11"/>
+	<hr/>
+	类型：
+	<select name="type">
+		<option value="">请选择</option>
+		<option value="1">公告</option>
+		<option value="2">新闻</option>
+	</select>
+	<hr/>
+	可传阅部门：<br/>
+	<input type="checkbox" name="read" value="1" caption="工程"/>
+	<input type="checkbox" name="read" value="2" caption="研发"/>
+	<input type="checkbox" name="read" value="3" caption="规划"/>
+	<hr/>
+	紧急程度：<br/>
+	<input type="radio" name="leval" value="1" caption="一般"/>
+	<input type="radio" name="leval" value="2" caption="急"/>
+	<input type="radio" name="leval" value="3" caption="紧急"/>
+	<hr/>
+	附件：
+	<input type="file" name="file"/>
+	<hr/>
+	所属区域：
+	<eselect name="area">
+		<option>白下区</option>
+		<option>鼓楼区</option>
+		<option>建邺区</option>
+		<option>雨花区</option>
+	</eselect>
+	<hr/>
+	发布时间：
+	<object name="public" type="date" />
+	<hr/>
+	是否发布：
+	<switch name="isPublic" value="1"/>
+</div>
+</body>
+<footer>
+<input type="button" value="提交alert提示" onclick="doSubmit()" style="width:50%;"/>
+<input type="button" value="提交toast提示" onclick="doSubmit1()" style="width:50%;"/>
+</footer>
+</html>

@@ -1,0 +1,35 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.nj.fiberhome.com.cn/exmobi.dtd">
+<html>
+<head>
+<meta charset="UTF-8"/>
+<title>其他实例</title>
+<style>
+a{color:red;}
+hr{margin:10 0;}
+.blue{color:blue;}
+</style>
+<script src="res:script/exmobijs/base.js"/>
+<script src="res:script/exmobijs/utility.js"/>
+<script src="res:script/exmobijs/app.js"/>
+<script src="res:script/exmobijs/db.js"/>
+<script src="res:script/exmobijs/validate.js"/>
+<script src="res:script/exmobijs/xpath.js"/>
+<script>
+<![CDATA[
+
+]]>
+</script>
+</head>
+<body>
+<div class="blue">tel(telNumber,owner of tel)</div>
+用于拨打电话，主要是封装了带提示语，不允许不带参数，只有一个参数认为是号码会提示是否拨打某个号码，有两个参数提示是否给某人拨打某个电话，如：
+参数为空字符串
+<a href="$a.tel('')">$a.tel('')</a>
+有一个参数
+<a href="$a.tel('18901596118')">$a.tel('18901596118')</a>
+有两个参数
+<a href="$a.tel('18901596118','nandy')">$a.tel('18901596118','nandy')</a>
+<hr/>
+<a href="$a.toast('用户名或者密码错误！')">$a.toast('用户名或者密码错误！')</a>
+</body>
+</html>

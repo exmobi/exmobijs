@@ -1,0 +1,70 @@
+ <html xmlns="http://www.w3.org/1999/xhtml"> 
+<head> 
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312" /> 
+<title>blog式日历控件</title>
+
+<script src="res:script/exmobijs/base.js"/>
+<script src="res:script/exmobijs/app.js"/>
+<script src="res:script/exmobijs/utility.js"/>
+<script src="res:script/exmobijs/calendar.js"/>
+<script type="text/javascript"> 
+
+<![CDATA[
+         
+//初始化 divId,calendarColor,calendarClickColor,preyearHref,premonthHref,nextmonthHref,nextyearHref
+var calendar =  $calendar("calendardivid","#10D2ED","#ff8800","preyearHref","premonthHref","nextmonthHref","nextyearHref");
+var data = [{"date":"2013-03-24","startTime":"12:50","endTime":"14:34","title":"岁[]()的发放","href":"getdetail('某条日程的id')"},{"date":"2013-02-17","startTime":"13:50","endTime":"14:34","title":"ss岁的发放","href":"getdetail('某条日程的id')"}];
+//calendar.provide(data);
+
+calendar.provide("http://getfirstdata.jsp", "get", '', '', true);
+
+function preyearHref()
+{
+	
+	//上一年
+  var data = [{"date":"2012-02-28","startTime":"12:50","endTime":"14:34","title":"岁[]()的发放","href":"getdetail('某条日程的id')"},{"date":"2012-02-27","startTime":"13:50","endTime":"14:34","title":"ss岁的发放","href":"getdetail('某条日程的id')"}];
+ calendar.preyear().provide(data);
+}
+function premonthHref()
+{
+	//上一月
+	
+ var data = [{"date":"2013-01-28","startTime":"12:50","endTime":"14:34","title":"岁[]()的发放","href":"getdetail('某条日程的id')"},{"date":"2013-01-27","startTime":"12:50","endTime":"14:34","title":"ss岁的发放","href":"getdetail('某条日程的id')"}];
+ calendar.premonth().provide(data);
+}
+function nextyearHref()
+{
+	//下一年
+	var data = [{"date":"2014-02-28","startTime":"12:50","endTime":"14:34","title":"岁[]()的发放","href":"getdetail('某条日程的id')"},{"date":"2014-02-17","startTime":"13:50","endTime":"14:34","title":"ss岁的发放","href":"getdetail('某条日程的id')"}];
+ 
+ calendar.nextyear().provide(data);
+}
+function nextmonthHref()
+{
+	var data = [{"date":"2013-03-01","startTime":"12:50","endTime":"14:34","title":"岁[]()的发放","href":"getdetail('某条日程的id')"},{"date":"2013-02-27","startTime":"12:50","endTime":"14:34","title":"ss岁的发放","href":"getdetail('某条日程的id')"}];	 
+	//下一月
+ calendar.nextmonth().provide(data);
+}
+
+function getdetail(id)
+{
+	 alert(id);
+}
+
+]]>
+
+</script> 
+<style type="text/css">
+ td{
+    height:35dp;
+  }	    
+ </style> 
+</head>
+
+ 
+<body > 
+<div  id="calendardivid" style="text-align:center;"/>
+
+
+</body> 
+</html>

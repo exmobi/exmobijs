@@ -1,0 +1,81 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.nj.fiberhome.com.cn/exmobi.dtd">
+<html>
+<head>
+<meta charset="UTF-8"/>
+<title>db数据库类实例</title>
+<style>
+a{color:red;}
+hr{margin:10 0;}
+.blue{color:blue;}
+</style>
+<script src="res:script/exmobijs/base.js"/>
+<script src="res:script/exmobijs/utility.js"/>
+<script src="res:script/exmobijs/app.js"/>
+<script src="res:script/exmobijs/db.js"/>
+<script src="res:script/exmobijs/validate.js"/>
+<script src="res:script/exmobijs/xpath.js"/>
+<script>
+<![CDATA[
+	var db,tbl;
+	var rs = [];
+]]>
+</script>
+</head>
+<body>
+<div class="blue">$db(dataName,isCreate,path,key)类是数据库操作类</div>
+<font color="blue">第一步：打开数据库</font>可以通过三种方法打开相应的数据库：<br/>
+<a href="db=$db();">var db = $db();</a>//不传参打开当前页面所在应用的默认数据库（是一个库名为应用名的数据库）
+<hr/>
+<font style="color:red;">var db = $db('basic@fiberhome');</font>//只有一个参数，打开应用名为该参数的数据库，这里相当于打开basic@fiberhome这个应用的默认数据库
+<hr/>
+<font style="color:red;">var db = $db('mydb', true);</font>//有两个或两个以上参数，第一个参数指定一个自定义的数据库名，第二个参数指定库不存在是否默认创建，第三和第四个参数主要为数据库加密准备
+
+不同类型的数据库，其表操作都是一样的，本实例均以本应用默认数据库为例。
+<hr size="3"/>
+<font color="blue">第二步：创建表</font>一般操作一个数据库首先要创建表，如果已经创建好该步骤可以跳过。该类提供了<br/>
+<a href="tbl=db.table('mytbl');">var tbl = db.table('mytbl');</a>
+对名为mytbl的表进行创建、增删改列、删除表的操作。分别为：
+<hr/>
+<a href="tbl.create('id INTEGER','name TEXT')">tbl.create('id INTEGER','name TEXT');</a>//创建表，可以有多个参数，每个参数为一个列信息格式为"字段名   类型（长度）  默认值"，如果已经创建则不会再创建，但是可以增删改列。
+<hr/>
+<a href="tbl.addCol('age', 'TEXT', '');">tbl.addCol('age', 'TEXT', '');</a>//给表增加列，三个参数分别为:字段名,数据类型(含长度),默认值
+<hr/>
+<a href="tbl.mdfCol('age', 'INTEGER', '');">tbl.mdfCol('age', 'INTEGER', '');</a>//修改表的列信息，三个参数分别为:字段名,数据类型(含长度),默认值
+<hr/>
+<a href="tbl.delCol('age');">tbl.delCol('age');</a>//删除列，参数为字段名
+<hr/>
+<a href="tbl.drop();">tbl.drop();</a>//删除表
+<hr size="3"/>
+<font color="blue">第三步（1）：查</font>表创建后可以使用db.query(sql)；来查找想要的数据，如：
+<input type="text" name="query" value="select * from mytbl"/>
+执行执行<a href="rs = db.query($('query').val());$('result').html('');for(var i=0;i&lt;rs.length;i++){ $('result').addHtml('id='+rs[i].id+' and name='+rs[i].name+'&lt;br/&gt;'); }">rs = db.query($('query').val());</a>查询数据
+<div id="result" style="border-size:1;border-radius:4;border-color:#cccccc;padding:10;">可以在这看到查询结果</div>
+<hr/>
+rs是一个json数组，循环这个这个数组得到一条记录的json对象，通过对象.列名可以得到所有查询的结果
+<br/>
+点击下面代码查看执行结果：
+<div style="color:red;">
+for(var i=0;i&lt;rs.length;i++){<br/>
+	$('result').addHtml('id='+rs[i].id+' name='+rs[i].name+'&lt;br/&gt;');<br/>
+}
+</div>
+<hr size="3"/>
+<font color="blue">第三步（2）：增删改</font>单条数据的增删改可以使用db.update(sql);返回-1为连接不上，true为执行成功，false为执行失败。执行完相关语句可以通过上面的查询验证是否成功；
+<br/>
+<input type="text" name="insert" value="insert into mytbl (id,name) values ('1','nandy') "/>
+执行<a href="db.update($('insert').val());">db.update($('insert').val());</a>增加一条数据
+<hr/>
+<input type="text" name="update" value="update mytbl set name='lilei' where id='1' "/>
+执行<a href="db.update($('update').val());">db.update($('update').val());</a>修改一条数据
+<hr/>
+<input type="text" name="delete" value="delete from mytbl where id='1' "/>
+执行<a href="db.update($('delete').val());">db.update($('delete').val());</a>删除一条数据
+<hr size="3"/>
+<font color="blue">第三步（3）：批处理</font>多条语句的增删改可以使用db.execute(sql,[sql...])，里面用到了事务，有一条sql执行不成功将回滚。执行完相关语句可以通过上面的查询验证是否成功；
+<input type="text" name="execute1" value="insert into mytbl (id,name) values ('2','lucy')"/>
+<input type="text" name="execute2" value="insert into mytbl (id,name) values ('3','lili')"/>
+执行<a href="db.execute($('execute1').val(), $('execute2').val());">db.execute($('execute1').val(), $('execute2').val());</a>执行多条语句
+<hr size="3"/>
+<font color="blue">第四步：关闭数据库</font>一般使用完数据库需要关闭的，可以使用<a href="db.close();">db.close();</a>
+</body>
+</html>

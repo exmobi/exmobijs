@@ -1,0 +1,45 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.nj.fiberhome.com.cn/exmobi.dtd">
+<html>
+<head>
+<meta charset="UTF-8"/>
+<title>发送微博</title>
+<script src="res:script/exmobijs/base.js"/>
+<script src="res:script/exmobijs/utility.js"/>
+<script src="res:script/exmobijs/app.js"/>
+<script src="res:script/exmobijs/weibo.js"/>
+<script>
+<![CDATA[
+function loadPhoto(){
+
+    var photo = document.getElementById("photo");          
+
+    photo.openCameraUpload(true);
+
+}
+
+function doSend(type){	
+	var content = document.getElementById("content").value;
+	var photo = document.getElementById("photo");
+	var path = "";
+	if(photo.getFilePaths().length>0){
+		path = photo.getFilePath(photo.getFilePaths().length-1);
+	}
+	if(!Util.getConnectState()){
+		$a.toast("抱歉，网络无法连接，请稍后分享！");
+		return;
+	}
+
+	$wb.init(type).go(content, path);
+}
+
+]]>
+</script>
+</head>
+<body>
+<textarea prompt="请输入微博内容" id="content"></textarea>
+<photoupload id="photo" name="photo" style="display:none"/>
+<input type="button" value="拍照" onclick="loadPhoto()" style="width:30%;"></input>
+<input type="button" value="发送新浪" onclick="doSend('sina')" style="width:35%;"></input>
+<input type="button" value="发送腾讯" onclick="doSend('tencent')" style="width:35%;"></input>
+</body>
+</html>

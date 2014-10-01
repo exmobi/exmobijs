@@ -1,0 +1,57 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.nj.fiberhome.com.cn/exmobi.dtd">
+<html>
+<head>
+<meta charset="UTF-8"/>
+<title>array类型封装实例</title>
+<style>
+a{color:red;}
+hr{margin:10 0;}
+.blue{color:blue;}
+</style>
+<script src="res:script/exmobijs/base.js"/>
+<script src="res:script/exmobijs/utility.js"/>
+<script src="res:script/exmobijs/app.js"/>
+<script src="res:script/exmobijs/db.js"/>
+<script src="res:script/exmobijs/validate.js"/>
+<script src="res:script/exmobijs/xpath.js"/>
+<script>
+<![CDATA[
+
+]]>
+</script>
+</head>
+<body>
+<div class="blue">toString() and toString(String)</div>
+将数组转换为字符串，如果不传参则将所有数组元素直接连接，如果有参数的话，将数组元素通过参数连接，如：
+<a href="alert([1,2,3].toString())">[1,2,3].toString()</a>
+和
+<a href="alert([1,2,3].toString('|'))">[1,2,3].toString('|')</a>
+<hr/>
+<div class="blue">append(Object,[Object...])</div>
+给数组添加一个或多个元素，如：
+<a href="alert([1,2,3].append('a'))">[1,2,3].append('a')</a>
+和
+<a href="alert([1,2,3].append(4,'b'))">[1,2,3].append(4,'b')</a>
+都是可以的
+<hr/>
+<div class="blue">clear()</div>
+将数组元素所有元素清空，如
+<a href="alert([1,2,3].clear().length)">[1,2,3].clear().length</a>
+长度是0而不是3
+<hr/>
+<div class="blue">indexOf(String or Int)</div>
+获得符合参数要求的数组元素中的第一个元素的在数组中的位置，不存在则返回-1
+<a href="alert([1,2,3].indexOf(2))">[1,2,3].indexOf(2)</a>
+<hr/>
+<div class="blue">remove(String or Int) and del(Int)</div>
+remove是删除等于参数的所有数组元素
+<a href="alert([1,2,3,2,5].remove(2))">[1,2,3,2,5].remove(2)</a>
+del是将索引号等于参数的数组元素删除
+<a href="alert([1,2,3,2,5].del(2))">[1,2,3,2,5].del(2)</a>
+<hr/>
+<div class="blue">total(String or Int)</div>
+统计数组元素中等于参数的个数，如：
+<a href="alert([1,2,3,2,5].total(2))">[1,2,3,2,5].total(2)</a>
+<hr/>
+</body>
+</html>

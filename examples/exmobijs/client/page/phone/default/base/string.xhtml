@@ -1,0 +1,84 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.nj.fiberhome.com.cn/exmobi.dtd">
+<html>
+<head>
+<meta charset="UTF-8"/>
+<title>string类型封装实例</title>
+<style>
+a{color:red;}
+hr{margin:10 0;}
+.blue{color:blue;}
+</style>
+<script src="res:script/exmobijs/base.js"/>
+<script src="res:script/exmobijs/utility.js"/>
+<script src="res:script/exmobijs/app.js"/>
+<script src="res:script/exmobijs/db.js"/>
+<script src="res:script/exmobijs/validate.js"/>
+<script src="res:script/exmobijs/xpath.js"/>
+<script>
+<![CDATA[
+
+]]>
+</script>
+</head>
+<body>
+<div class="blue">encode() and decode()</div>
+对字符串进行URL编码和对字符串进行URL解码，即通过
+<a href="alert('你好'.encode())">'你好'.encode()</a>
+进行编码，通过
+<a href="alert('%E4%BD%A0%E5%A5%BD'.decode())">'%E4%BD%AO%E5%A5%BD'.decode()</a>
+进行解码
+<hr/>
+<div class="blue">trim()</div>
+去掉字符串两边的空格，即
+<a href="alert('  你好    '.trim())">'  你好    '.trim()</a>
+<hr/>
+<div class="blue">replaceAll(String or Regex,String)</div>
+将符合第一个参数要求的字符串替换成第二个参数的值，比如，替换abcafgdabd字符串里的所有的a为z可以这么写
+<a href="alert('abcafgdabd'.replaceAll('a','z'))">'abcafgdadd'.replaceAll('a','z')</a>
+<hr/>
+<div class="blue">htmlEncode() and htmlDecode()</div>
+将字符串中的html敏感字符进行编码或者解码，比如要把字符串中的&lt;input type='text'/&gt;进行编码可以使用
+<a href="alert('&lt;input type=\'text\'/&gt;'.htmlEncode())"><![CDATA[ '<input type='text'/>'.htmlEncode() ]]></a>
+同样可以通过
+<a href="alert('&lt;input type=\&apos;text\&apos;/&gt;'.htmlDecode())"><![CDATA[ '&lt;input type=&apos;text&apos;/&gt;'.htmlDecode() ]]></a>
+<br/>
+这两个方法主要用在服务端下行回来的数据中包含XML数据时可能会对数据进行编码，所以在客户端要通过JS进行解码，或者在上行到服务端的时候要把数据进行编码。
+<hr/>
+<div class="blue">toJSON() and toInt() and toXML()</div>
+将一个JSON字符串转换为JSON对象可以使用toJSON，比如
+<a href="alert('{\'name\':\'nandy\', \'age\':\'10\'}'.toJSON().name)">"{'name':'nandy', 'age':'10'}".toJSON().name</a>
+可以取得转换后的JSON对象的name属性。通过toInt可以将一个数字字符串转换成纯数字
+<a href="alert('1'.toInt()+1)">'1'.toInt()+1</a>
+通过toXML可以将一个符合XML格式的字符串转换成XML对象，并返回其根节点，如
+<a href="alert('&lt;person&gt;&lt;name&gt;nandy&lt;/name&gt;&lt;age&gt;10&lt;/age>&lt;/person&gt;'.toXML().name)"><![CDATA[ '<person><name>nandy</name><age>10</age></person>'.toXML().name ]]></a>
+可以获取到跟节点的标签名
+
+<hr/>
+<div class="blue">session() and session(String or Array)</div>
+可以通过session(String or Array)，为字符串添加记忆功能，设置的参数值将在应用关闭前在任何页面通过session()调用，比如，设置
+<a href="'memory'.session('it a remember word');alert('记忆设置成功！')">'memory'.session('it a remember word')</a>
+可以通过
+<a href="alert('记忆的内容为：'+'memory'.session())">'memory'.session()</a>
+获得设置的session值
+<br/>这个方法常用在页面间传值
+<hr/>
+<div class="blue">tjt(JSONString)</div>
+tjt全称为Tempate and JSON Transformations，即将字符串作为模板，参数JSON串作为数据源，将JSON数据源的数据注入到模板中，达到动态修改模板内容的效果，
+模板中需要被注入的内容通过${json对象的属性}标示。比如：
+<a href="$('tjt').html('&lt;div&gt;${title}&lt;/div&gt;&lt;hr/&gt;'.tjt('[{\'title\':\'任务1\', \'end_time\':\'2012-09-01\'}, {\'title\':\'任务2\', \'end_time\':\'2012-06-22\'}]'))">
+<![CDATA[
+$('tjt').html("<div>${title}</div><hr/>".tjt("[{'title':'任务1', 'end_time':'2012-09-01'}, {'title':'任务2', 'end_time':'2012-06-22'}]"))
+]]>
+</a>
+模板中的${title}注入的是json中title属性的值。如果JSONSting是对象则只注入一次，如果是数组则注入数组长度的次数。
+<div id="tjt">点击上面的链接这里的值会被模板注入后的值替换</div>
+<hr/>
+<div class="blue">toAscii() and unAscii()</div>
+有时候操作的数据会是Ascii编码的，这样到客户端就需要解码，有时候提交的内容是要进行Ascii进行编码，可以如下操作：
+<a href="alert('你好'.toAscii())">'你好'.toAscii()</a>
+进行Ascii编码，然后通过
+<a href="alert('\\u4f60\\u597d'.unAscii())">'\u4f60\u597d'.unAscii()</a>
+解码
+<hr/>
+</body>
+</html>

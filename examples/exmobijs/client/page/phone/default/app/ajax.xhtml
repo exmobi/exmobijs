@@ -1,0 +1,52 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.nj.fiberhome.com.cn/exmobi.dtd">
+<html>
+<head>
+<meta charset="UTF-8"/>
+<title>ajax封装</title>
+<script src="res:script/exmobijs/base.js"/>
+<script src="res:script/exmobijs/utility.js"/>
+<script src="res:script/exmobijs/app.js"/>
+<script src="res:script/exmobijs/validate.js"/>
+
+<script>
+<![CDATA[
+    //不用传参示例
+	function doAjax(){
+		var data = "username="+$("username").val()+"&password="+$("password").val();
+		$a.go($("form").action+"?ajax", "post", data, onSuccess, null, '{"Content-Type": "application/x-www-form-urlencoded"}', true);	
+	}
+	
+	function onSuccess(data){
+		var rs = data.responseText.trim().toJSON();
+		alert(rs.status);//登陆信息
+	}
+	/////////////////////////////////////////////////////////////////////////////////////////////
+	
+	//需要传参示例
+	function doAjax1(){
+		var data = "username="+$("username").val()+"&password="+$("password").val();
+		//注意，要想ajax可以传参，可以增加第9个参数
+		$a.go(document.getElementById("form").action+"?ajax", "post", data, "onSuccess1", null, '{"Content-Type": "application/x-www-form-urlencoded"}', true, false, {"name": $("username").val()});	
+	}
+	
+	function onSuccess1(data){
+		var rs = data.responseText;
+		alert(data.getStringData("name"));//返回用户名信息
+	}
+]]>
+</script>
+</head>
+<body>
+通过$a.go封装了ajax对象。其中包含了超时操作，如果请求超时会自动执行超时操作，而不会进入回调函数。并且简化了写法，无需new也不需要send。直接调用go即可，其它参数一致，如doAjax()。
+<br/>
+需要注意的是如果需要在回调函数里面获取参数，那就需要定义个变量等于go对象，其实go就是一个ajax对象。可以给这个对象传参，如doAjax1()里的示例。
+	<form id="form" action="http://domain/app/services/webServiceTest" method="post">
+		<input type="text" name="username" value="admin" prompt="请输入用户名"/>
+		<br/>
+		<input type="password" name="password" value="111" prompt="请输入密码"/>
+		<br/>
+		<input type="button" value="ajax不传参" onclick="doAjax()" style="width:50%"/>
+		<input type="button" value="ajax传参" onclick="doAjax1()" style="width:50%"/>
+	</form>
+</body>
+</html>

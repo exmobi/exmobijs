@@ -1,0 +1,152 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.nj.fiberhome.com.cn/exmobi.dtd">
+<html>
+	<head>
+		<script type="text/javascript"><![CDATA[
+	   	var list = document.getElementById("listview");
+		var dp = list.getDataProvider();
+			    
+	   	function test1(){
+			var myJSONObject ="{\"listitem\":{\"href\":\"alert('这是第一个div')\"},\"name\" : {\"innerHTML\":\"管郁方\"},\"number\" : {\"text\":\"13814548364\"},\"btn\":{\"onclick\":\"calltel(13814548364)\",\"onlongclick\":\"longclick()\"},\"image\":{\"src\":\"res:image/logo.png\",\"href\":\"imageClick(0)\"}}";	
+			dp.appendItem(myJSONObject);					
+			myJSONObject ="{\"listitem\":{\"href\":\"alert('这是第二个div')\"},\"name\" : {\"innerHTML\":\"李春林\"},\"number\" : {\"text\":\"18626459136\"},\"btn\":{\"onclick\":\"calltel(18626459136)\",\"onlongclick\":\"longclick()\"},\"image\":{\"src\":\"res:image/logo.png\",\"href\":\"imageClick(0)\"}}";						
+			dp.appendItem(myJSONObject);
+					
+			myJSONObject ="{\"name\" : {\"innerHTML\":\"何晓创\"},\"number\" : {\"text\":\"13611566064\"},\"btn\":{\"onclick\":\"calltel(13611566064)\",\"onlongclick\":\"longclick()\"},\"image\":{\"src\":\"res:image/logo.png\",\"href\":\"imageClick(0)\"}}";						
+			dp.appendItem(myJSONObject);
+					
+			myJSONObject ="{\"name\" : {\"text\":\"张建东\"},\"number\" : {\"text\":\"100001\"},\"btn\":{\"onclick\":\"calltel(100001)\",\"onlongclick\":\"longclick()\"},\"image\":{\"src\":\"res:image/logo.png\",\"href\":\"imageClick(0)\"}}";						
+			dp.appendItem(myJSONObject);
+			myJSONObject ="{\"name\" : {\"text\":\"成少波\"},\"number\" : {\"text\":\"100002\"},\"btn\":{\"onclick\":\"calltel(100002)\",\"onlongclick\":\"longclick()\"},\"image\":{\"src\":\"res:image/logo.png\",\"href\":\"imageClick(0)\"}}";						
+			dp.appendItem(myJSONObject);
+			myJSONObject ="{\"name\" : {\"text\":\"李犇\"},\"number\" : {\"text\":\"100003\"},\"btn\":{\"onclick\":\"calltel(100003)\",\"onlongclick\":\"longclick()\"},\"image\":{\"src\":\"res:image/logo.png\",\"href\":\"imageClick(0)\"}}";						
+			dp.appendItem(myJSONObject);
+			myJSONObject ="{\"name\" : {\"text\":\"王明柱\"},\"number\" : {\"text\":\"100004\"},\"btn\":{\"onclick\":\"calltel(100004)\",\"onlongclick\":\"longclick()\"},\"image\":{\"src\":\"res:image/logo.png\",\"href\":\"imageClick(0)\"}}";						
+			dp.appendItem(myJSONObject);
+			myJSONObject ="{\"name\" : {\"text\":\"毛晶晶\"},\"number\" : {\"text\":\"100005\"},\"btn\":{\"onclick\":\"calltel(100005)\",\"onlongclick\":\"longclick()\"},\"image\":{\"src\":\"res:image/logo.png\",\"href\":\"imageClick(0)\"}}";						
+			dp.appendItem(myJSONObject);
+			myJSONObject ="{\"name\" : {\"text\":\"属性规定某个选项应该被禁用。被禁用的选项既不可用，也不可点击\"},\"number\" : {\"text\":\"100006\"},\"btn\":{\"onclick\":\"calltel(100006)\",\"onlongclick\":\"longclick()\"},\"image\":{\"src\":\"res:image/logo.png\",\"href\":\"imageClick(0)\"}}";						
+			dp.appendItem(myJSONObject);
+			dp.refreshData();
+					
+		}		
+      
+		function calltel(number){
+			alert("call phone number "+number);
+		}
+		       
+		function longclick(){
+			alert("long clicked");
+		}
+		function imageClick(src){
+		    dp.removeItem(src);
+		    dp.refreshData();
+		}	
+		       
+		function divCliclk(){
+			alert("div");
+		}
+		function show(){
+		    list.setDisplay(true);
+		}
+		function hidden(){
+		     list.setDisplay(false);
+		}
+		function showheader(){
+		     list.setHeaderShow(true);
+		}
+		function hiddenheader(){
+		     list.setHeaderShow(false);
+		}
+		function showfooter(){
+		     list.setFooterShow(true);
+		}
+		function hiddenfooter(){
+		     list.setFooterShow(false);
+		}
+		function hiddenfooter(){
+		     list.setFooterShow(false);
+		}
+		       
+
+		function clear(){
+			dp.clear();
+		    dp.refreshData();	
+		}
+		       
+		function getcount(){
+			alert(dp.getCount());
+		}
+		       
+		function appendItems(){
+			var jsonArray = "[{\"listitem\":{\"href\":\"divCliclk()\"},\"name\" : {\"innerHTML\":\"appendItems测试第一条\"},\"number\" : {\"text\":\"13814548364\"},\"btn\":{\"onclick\":\"calltel(13814548364)\",\"onlongclick\":\"longclick()\"},\"image\":{\"src\":\"res:image/photoMan.png\",\"href\":\"imageClick(0)\"}},{\"listitem\":{\"href\":\"divCliclk()\"},\"name\" : {\"innerHTML\":\"appendItems第二条\"},\"number\" : {\"text\":\"13814548364\"},\"btn\":{\"onclick\":\"calltel(13814548364)\",\"onlongclick\":\"longclick()\"},\"image\":{\"src\":\"res:image/photoWoman.png\",\"href\":\"imageClick(0)\"}}]";
+		    dp.appendItems(jsonArray);
+		    dp.refreshData();	
+		}
+		      
+		function addItems(){
+			var jsonArray = "[{\"listitem\":{\"href\":\"divCliclk()\"},\"name\" : {\"innerHTML\":\"addItems测试第一条\"},\"number\" : {\"text\":\"13814548364\"},\"btn\":{\"onclick\":\"calltel(13814548364)\",\"onlongclick\":\"longclick()\"},\"image\":{\"src\":\"res:image/photoMan.png\",\"href\":\"imageClick(0)\"}},{\"listitem\":{\"href\":\"divCliclk()\"},\"name\" : {\"innerHTML\":\"addItems第二条\"},\"number\" : {\"text\":\"13814548364\"},\"btn\":{\"onclick\":\"calltel(13814548364)\",\"onlongclick\":\"longclick()\"},\"image\":{\"src\":\"res:image/photoWoman.png\",\"href\":\"imageClick(0)\"}}]";
+		    dp.addItems(jsonArray,0);
+		    dp.refreshData();	
+		}
+    
+		]]></script>
+		<title>list注入数据</title>
+	</head>
+	<header>
+		<a style="font-size:16dp;color:#333333;" href="show()">显示</a>
+		<a style="font-size:16dp;color:#333333;" href="hidden()">隐藏</a>
+		<a style="font-size:16dp;color:#333333;" href="clear()">清除</a>
+		<a style="font-size:16dp;color:#333333;" href="getcount()">获取个数</a>
+		<a style="font-size:16dp;color:#333333;" href="showheader()">显示header</a>
+		<a style="font-size:16dp;color:#333333;" href="hiddenheader()">隐藏header</a>
+		<a style="font-size:16dp;color:#333333;" href="showfooter()">显示footer</a>
+		<a style="font-size:16dp;color:#333333;" href="hiddenfooter()">隐藏footer</a>
+		<a style="font-size:16dp;color:#333333;" href="appendItems()">appendItems</a>
+		<a style="font-size:16dp;color:#333333;" href="addItems()">addItems</a>
+	</header>
+	<body style="background-image:url(res:image\wallpaper\bgmain.png)" onload="test1()">
+		<list id="listview" onscrolltop="test1()" onscrollbottom="test1()">
+			<div data-role="listtopdrag" style="text-align:center;height:30dp">
+				<font style="font-size:20dp;color:#333333">向下拖动</font>
+			</div>
+			<div data-role="listtoprelease" style="text-align:center">
+				<font style="font-size:20dp;color:#333333">释放即将刷新</font>
+			</div>
+			<div data-role="listtoprefresh" style="text-align:center" >
+				<font style="font-size:20dp;color:#333333">正在刷新.....</font>
+			</div>
+
+			<div data-role="listheader" style="width:95%;margin:5 0 0 0;text-align:center;">
+				这是头部
+			</div>
+			<div data-role="listitem" style="width:100%;margin:0;background-click-image:url(res:image\item-2.png)" href="divCliclk()">
+				<div style="width:10%">
+					<img id="image" style="width:100%" />
+				</div>
+				<div style="width:70%;">
+					<font id="name" style="color:#5f5f5f;font-size:1.5em">姓名</font>
+					<br />
+					<font id="number" style="color:#5f5f5f;font-size:1.5em">电话号码</font>
+				</div>
+				<div style="width:20%">
+					<input id="btn" type="button"  style="padding:8 8 8 8"   value="拨打" />
+				</div>
+			</div>
+			<div data-role="listfooter" style="width:95%;margin:10 0 0 0;text-align:center">
+				<font style="color:#5f5f5f;font-size:1.1em">这是尾部</font>
+			</div>
+			<div data-role="listbottomdrag" style="text-align:center;height:30dp">
+				<font style="font-size:20dp;color:#333333">向上拖动</font>
+			</div>
+			<div data-role="listbottomrelease" style="text-align:center">
+				<font style="font-size:20dp;color:#333333">释放即将刷新</font>
+			</div>
+			<div data-role="listbottomrefresh" style="text-align:center">
+				<font style="font-size:20dp;color:#333333">正在刷新.....</font>
+			</div>
+
+		</list>
+	</body>
+	<menubar show="false">
+	</menubar>
+</html>

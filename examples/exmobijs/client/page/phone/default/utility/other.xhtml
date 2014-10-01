@@ -1,0 +1,39 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.nj.fiberhome.com.cn/exmobi.dtd">
+<html>
+<head>
+<meta charset="UTF-8"/>
+<title>其他实例</title>
+<style>
+a{color:red;}
+hr{margin:10 0;}
+.blue{color:blue;}
+</style>
+<script src="res:script/exmobijs/base.js"/>
+<script src="res:script/exmobijs/utility.js"/>
+<script src="res:script/exmobijs/app.js"/>
+<script src="res:script/exmobijs/db.js"/>
+<script src="res:script/exmobijs/validate.js"/>
+<script src="res:script/exmobijs/xpath.js"/>
+<script>
+<![CDATA[
+
+]]>
+</script>
+</head>
+<body>
+<div class="blue">transObj(jsonObj)</div>
+该方法可以将一个json对象转换成json字符串，一般用于一些ajax提交中需要提交json字符串的情况以及一些其他的json操作，如：
+<a href="alert($u.transObj({'name':'nandy','age':'10'}))">$u.transObj({'name':'nandy','age':'10'})</a>
+<br/>
+JSON相关介绍，JS中：<br/>
+var jsonObj = {'name':'nandy','age':'10'};//这是一个JSON对象<br/>
+var jsonArr = [{'name':'nandy','age':'10'},{'name':'lily','age':'8'}];//这是一个JSON数组<br/>
+var jsonStr1 = "{'name':'nandy','age':'10'}";//这是一个JSON字符串，因为用引号引起来了
+var jsonStr2 = "[{'name':'nandy','age':'10'},{'name':'lily','age':'8'}]";//这也是一个JSON字符串
+<br/>
+alert(jsonObj)和alert(jsonArr)返回的都是object，alert(jsonStr1)和alert(jsonStr2)可以看到JSON的内容。<br/>
+但是可以通过JSON格式操作只有jsonObj和jsonArr，比如alert(jsonObj.name)是可以的，alert(jsonStr1.name)会报错。
+
+<hr/>
+</body>
+</html>

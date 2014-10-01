@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<maxml version="2.0" xmlns="http://www.nj.fiberhome.com.cn/map"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.nj.fiberhome.com.cn/map maxml-2.0.xsd">
+	
+	<config>
+		<domain address="218.94.117.235:999" name="domain"/>
+		<!-- 数据库  -->
+		<database id="postgresql" dbtype="postgresql" ip="218.94.117.235" port="1006" dbname="app" user="sitest" password="123456" maxconn="10" minconn="2" defconn="5" />	
+	</config>
+	
+	<route baseaddr="http://domain">	
+		<forward pattern="" path=""/>
+		<!-- 列表展示post带JSON请求体 -->
+		<forward pattern="/app/template/action/taskManagerAction.jsp\?handler=list&amp;dataType=json.*" path="provide/taskManagerListJSON.jsp"/>
+		<forward pattern="/app/services/webServiceTest\?ajax" path="webserviceAjax.jsp"/>
+	</route>
+	
+	<route baseaddr="http://sql">
+		<!-- 获取第一条数据 -->
+		<forward pattern="/getFirstData.jsp" path="provide/dbFirstData.jsp"/>
+		<forward pattern="/getListData.jsp" path="provide/listData.jsp"/>
+	</route>
+</maxml>

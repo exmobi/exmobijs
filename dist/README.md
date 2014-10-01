@@ -1,0 +1,2 @@
+﻿#说明
+ExMobiJS框架的核心代码，放置于ExMobi客户端的script下

@@ -1,0 +1,84 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.nj.fiberhome.com.cn/exmobi.dtd">
+<html>
+<head>
+<meta charset="UTF-8"/>
+<title>可编辑数据的缓存</title>
+<script src="res:script/exmobijs/base.js"/>
+<script src="res:script/exmobijs/utility.js"/>
+<script src="res:script/exmobijs/app.js"/>
+<script>
+<![CDATA[
+/*
+这里的"username".session()是把用户名作为key的一部分，确保不同的用户访问的表单页面的缓存是自己的;
+同时把id作为作为key的一部分可以区分同类型的url的表单结构一样，但是内容不一样，从而确保读取的是某url的表单数据。
+这里的id只是一个唯一标识，需要视实际情况而定
+*/
+var key = "username".session()+window.getParameter("id")+" "; 
+function doCache(){	
+	//当需要缓存表单数据的时候使用
+	window.savePageData(key);
+	$a.toast("缓存成功");
+}
+
+function doLoad(){
+	//判断是否有缓存数据
+	if(window.isSavedPageData(key)){
+		//有的话先直接读取，由于要配合注入使用，所以先provide一个空对象，先把当前数据清空
+		$("divFrom").clear().provide({});
+		//然后再将缓存的数据load进来
+		window.loadPageData(key);
+	}else{
+		//否则没有缓存数据的话就发起请求获取
+		$a.go("http://sql/getFirstData.jsp", "get", '', doSuccess, null, '', true);
+	}
+}
+
+function doSuccess(data){
+	var formData = data.responseText.toJSON();
+	$("divFrom").clear().provide(formData);
+	//请求成功后设置缓存
+	window.savePageData(key);
+}
+]]>
+</script>
+</head>
+<body onload="doLoad()">
+<div>
+使用loadPageData和savePageData进行可编辑数据缓存的前提是：<br/>
+1、必须是表单控件<br/>
+2、控件必须有id属性
+</div>
+<hr/>
+<div id="divFrom">
+<div>标题：</div>
+<input type="text" id="title" name="title" value="${title}"/>		
+<div>开始时间：</div>
+<object type="date" id="begin_time" name="begin_time" value="${begin_time}" style="width:100%"/>		
+<div>结束时间：</div>		
+<object type="date" id="end_time" name="end_time" value="${end_time}" style="width:100%"/>	
+<div>任务执行人：</div>
+<select name="executor" id="executor">
+	<option >==请选择==</option>
+    <option value="${selected.executor='李勇'}">李勇</option>
+    <option value="${selected.executor='陶万鹏'}">陶万鹏</option>
+    <option value="${selected.executor='陈文胜'}">陈文胜</option>
+    <option value="${selected.executor='梅璇'}">梅璇</option>
+    <option value="${selected.executor='黄清华'}">黄清华</option>
+    <option value="${selected.executor='郑桂端'}">郑桂端</option>
+</select>	
+<div>优先级：</div>
+<input type="radio" id="p1" name="priority_level" value="${checked.priority_level='一般'}" caption="一般"/>	
+<input type="radio" id="p2" name="priority_level" value="${checked.priority_level='急'}" caption="急"/>	
+<input type="radio" id="p3" name="priority_level" value="${checked.priority_level='很急'}" caption="很急"/>	
+<div>抄送部门：</div>
+<input type="checkbox" id="c1" name="cc" value="${checked.cc='工程'}" caption="工程"/>	
+<input type="checkbox" id="c2" name="cc" value="${checked.cc='研发'}" caption="研发"/>	
+<input type="checkbox" id="c3" name="cc" value="${checked.cc='规划'}" caption="规划"/>	
+<div>任务说明：</div>
+<input type="text" id="remark" name="remark" value="${remark}"/>
+</div>
+</body>
+<footer>
+	<input type="button" value="保存到本地" style="width:100%;" onclick="doCache()"/>
+</footer>
+</html>
