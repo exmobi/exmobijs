@@ -70,7 +70,7 @@ $native.openWebView = function(href, el){
 
 $native.open = function(opt){//opt={url:'',id:''}
 	var html = $util.htmlTemplate(opt);	
-	ExMobiWindow.openData(html);
+	ExMobiWindow.openData(html, opt.isNew, false, '', opt.query);
 };
 
 $native.toast = function(msg){
