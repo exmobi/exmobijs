@@ -1,3 +1,7 @@
+/*
+*	ExMobi4.0 JS 框架之 webview桥接类browser.js
+*	Version	:	1.1.0
+*/
 $browser = {};
 $browser.cacheMap = {};
 
