@@ -1,6 +1,6 @@
 ﻿/*
 *	ExMobi4.0 JS 框架之 webview桥接类bridge.js(依赖app.js)
-*	Version	:	1.1.0
+*	Version	:	1.2.0
 */
 var $native = {};
 
@@ -116,13 +116,14 @@ $native._bridgeActivity = function(eventName,base64Str){
 
 };
 
-$native.showMask = function(){
-	var funStr = "$a.showMask()";	
+$native.showMask = function(callback){
+	var funStr = "$a.showMask("+(callback?false:true)+")";	
 	nativePage.executeScript(funStr);
-};
-$native.hideMask = function(){
-	var funStr = "$a.hideMask()";	
-	nativePage.executeScript(funStr);
+	$native.hideMask = function(){
+		var funStr = "$a.hideMask()";	
+		nativePage.executeScript(funStr);
+		callback&&callback();
+	}
 };
 
 $native.getParameter = function(k){
@@ -495,7 +496,7 @@ $util.sendMail = function(opts){
 	var funcStr = "$a.sendMail('"+opts.to+"','"+opts.subject+"','"+opts.content+"')";
 	nativePage.executeScript(funcStr);
 };
-
+$util._showPageLoading = false;
 $util.go = function(opts, handler){
 	if(!opts||!opts.url) return;
 	opts.url = A.Util.script(opts.url);
@@ -516,6 +517,10 @@ $util.go = function(opts, handler){
 	$util._cacheMap['_ajax_opts_key_'+index] = opts;
 	
 	ajax.setStringData('_ajax_opts_key_', index);
+	
+	$util._showPageLoading = A.settings.showPageLoading||$util._showPageLoading;
+	
+	if(!ajaxData.isBlock&&$util._showPageLoading) A.showMask();
 	
 	ajax.send();
 	
@@ -549,6 +554,9 @@ $util._ajax_getFunction = function(ajax){
 		opts.result = ajax.responseText;
 	}
 	delete $util._cacheMap['_ajax_opts_key_'+index];
+
+	if(!opts.isBlock&&$util._showPageLoading) A.hideMask();
+	
 	return opts;
 };
 
