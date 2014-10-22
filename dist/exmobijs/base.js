@@ -1,6 +1,6 @@
 ﻿/*
 *	ExMobi4.0 JS 框架之 控件对象类base.js(依赖app.js)
-*	Version	:	1.1.0
+*	Version	:	1.1.1
 */
 function $(x){
 	
@@ -18,19 +18,21 @@ function $(x){
 	//给不为空的对象添加函数
 	if(!obj) return null;
 	//设置对象隐藏
-	obj.hide = function(){
-		obj.style.display = "none";
-		return obj;
-	};
+	if(!obj.hide){
+		obj.hide = function(){
+			obj.style.display = "none";
+			return obj;
+		};
+	}
+	
 		
 	//设置对象显示
-	obj.show = function(){			
-		if(obj.objName=="page"){
-			document.getElementById(obj.id).show();
-		}else{
+	if(!obj.show){
+		obj.show = function(){			
 			obj.style.display = "block";
-		}
-	};
+		};
+	}
+	
 		
 	//设置对象显隐反转
 	obj.toggle = function(){	
