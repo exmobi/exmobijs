@@ -1,0 +1,57 @@
+<!-- XHTML文件 -->
+<html>
+	<head>
+		<meta charset="UTF-8"/>
+		<title>定位类</title>
+		<script src="res:script/exmobijs/base.js"/>
+		<script src="res:script/exmobijs/utility.js"/>
+		<script src="res:script/exmobijs/app.js"/>
+		<script src="res:script/exmobijs/xlocation.js"/>
+		<script>
+		<![CDATA[
+		function GetLocation(){
+			$xlocation.get(function(data){
+				if(!data) return;
+				$('lng').val(data.lng);
+				$('lat').val(data.lat);
+				$a.toast('经纬度已更新');
+			});
+		}
+		function GetAddressByLocation(){
+			$xlocation.getAddressByLocation($('lng').val(), $('lat').val(), function(data){
+				if(!data) return;
+				$('address').val(data.formatted_address);
+				$('city').val(data.addressComponent.city);
+				$a.toast('地址已更新');
+			});
+		}
+		function GetLocationByAddress(){
+			$xlocation.getLocationByAddress($('address').val(), $('city').val(), function(data){
+				if(!data) return;
+				$('lng').val(data.lng);
+				$('lat').val(data.lat);
+				$a.toast('经纬度已更新');
+			});
+		}
+		function TransToBaiduLocation(){
+			$xlocation.transToBaiduLocation($('lng').val(), $('lat').val(), function(data){
+				if(!data) return;
+				$('lng').val(data.lng);
+				$('lat').val(data.lat);
+				$a.toast('经纬度已更新');
+			});
+		}
+		]]>
+		</script>
+	</head>
+	<body>
+		<input type="button" value="获取经纬度" onclick="GetLocation()" style="width:100%;"></input>
+		<input id="lng" name="lng" prompt="请输入经度"/>
+		<input id="lat" name="lat" prompt="请输入纬度"/>
+		<input type="button" value="根据经纬度获取地址" onclick="GetAddressByLocation()" style="width:100%;"></input>
+		<input id="city" name="city" prompt="请输入城市"/>
+		<input id="address" name="address" prompt="请输入地址"/>
+		<input type="button" value="根据地址获取经纬度" onclick="GetLocationByAddress()" style="width:100%;"></input>
+		<input type="button" value="转换国标经纬度为百度经纬度" onclick="TransToBaiduLocation()" style="width:100%;"></input>
+	</body>
+</html>
