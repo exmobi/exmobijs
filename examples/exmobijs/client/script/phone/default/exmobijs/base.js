@@ -1,6 +1,6 @@
 ﻿/*
 *	ExMobi4.0 JS 框架之 控件对象类base.js(依赖app.js)
-*	Version	:	1.1.1
+*	Version	:	1.1.2
 */
 function $(x){
 	
@@ -317,8 +317,21 @@ String.prototype.tjt = function(){//tjt=Template and JSON Transformations
 	for(var i=0;i<json.length;i++){		
 		var str = this.replace(/\$\{([^\}]*)\}/g, function(s, s1){
 			//如果不是选择类型，如select，checbox、radio、switch等直接替换
-			if(s1.indexOf("=")==-1) return json[i][s1]==null?"":json[i][s1]; 			
-			return $a.compareProvide(s1,json[i]);
+			if(s1.indexOf("=")==-1){
+				var arr = s1.split('.');
+				var v = json[i];
+				for(var j=0;j<arr.length;j++){
+					if(!v){
+						v = "";
+						break;
+					}
+					v = v[arr[j]];
+				}
+				return v?v:"";
+			}else{
+				return $a.compareProvide(s1,json[i]);
+			}			
+			
 		});		
 		sb.push(str);
 	}

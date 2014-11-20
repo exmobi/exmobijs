@@ -1,0 +1,51 @@
+<html>
+	<head>
+		<meta charset="UTF-8"/>
+		<title>JSON类</title>
+		<style type="text/css">
+		input { width:100%; }
+		</style>
+		<script src="res:script/exmobijs/base.js"/>
+		<script src="res:script/exmobijs/json.js"/>
+		<script>
+		<![CDATA[
+		function transObj(){
+			var jsonObj = {a:1,b:2};
+			var jsonString = JSON.stringify(jsonObj);
+			$('jsonString').val(jsonString);
+		}
+		
+		function transStr(){
+			new DirectAjax({
+				url : 'http://api.map.baidu.com/geocoder/v2/?output=json&ak=D6f320a027a612f55050cba5855f64de&city=南京市&address=烽火科技大厦',
+				method : 'get',
+				data : '',
+				successFunction :　'doSuccess',
+				failFunction :　'doFail',
+				isBlock : true
+			}).send();
+		}
+		
+		function doSuccess(data){
+			var jsonString = data.responseText;
+			$('jsonString').val(jsonString);
+			var jsonObj = JSON.parse(jsonString);
+			alert(jsonObj.result.location.lng);			
+		}
+		function doFail(){
+			alert('出错了');
+		}
+		]]>
+		</script>
+	</head>
+	<body>
+		<input type="text" id="jsonString" value=""/>
+		<input type="button" value="转换为字符串" onclick="transObj()"/>
+		<input type="button" value="转换为对象" onclick="transStr()"/>
+		<br size="10"/>
+		<div><font color="red">JSON.stringify(jsonObj)</font>是将一个json对象转为一个json字符串</div>
+		<br size="10"/>
+		<div><font color="red">JSON.parse(jsonStr)</font>是将一个json字符串转为一个json对象</div>
+		
+	</body>
+</html>
