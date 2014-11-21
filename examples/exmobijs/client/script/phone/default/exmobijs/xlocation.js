@@ -1,6 +1,6 @@
 /*
 *	ExMobi4.0 JS 框架之 控件对象类xlocation.js
-*	Version	:	1.1.1
+*	Version	:	1.1.2
 */
 
 /*
@@ -17,9 +17,14 @@ var $xlocation = {
 		_index : 0,
 		_baiduLocationPool : {},
 		_gpsPool : {},
+		_locationPool : {},
 		_baiduLocationCallbackPool : {},
 		_gpsCallbackPool : {},
-		_customCallback 　: {}
+		_locationCallbackPool : {},
+		_customCallback 　: {},
+		_locationModal : {
+			lat:'',latitude:'',lng:'',longitude:'',location:'',locationtime:'',province:'',city:'',district:'',street:'',streetNumber:''
+		}
 };
 
 $xlocation.get = function(cb){
@@ -33,15 +38,11 @@ $xlocation.get = function(cb){
 		
 		var baiduLocation = $xlocation._baiduLocationPool[identify];
 		
-		$xlocation._baiduLocationCallbackPool[identify] = function(){	
-			cb&&cb(baiduLocation.isSuccess()?{
-				lat : baiduLocation.latitude,
-				lng : baiduLocation.longitude,
-				address : baiduLocation.address,
-				locationtime : baiduLocation.locationtime,
-				statuscode : baiduLocation.statuscode,
-				accuracy : baiduLocation.accuracy
-			}:null);
+		$xlocation._baiduLocationCallbackPool[identify] = function(){
+			var rs = $u.extend($xlocation._locationModal, baiduLocation.isSuccess()?baiduLocation:null);
+			rs.lng = rs.longitude;
+			rs.lat = rs.latitude;
+			cb&&cb(rs);
 			delete $xlocation._baiduLocationPool[identify];
 			delete $xlocation._baiduLocationCallbackPool[identify];
 		};
@@ -51,19 +52,34 @@ $xlocation.get = function(cb){
 		baiduLocation.setTimeout(options.timeout);
 		baiduLocation.onCallback = $xlocation._baiduLocationCallbackPool[identify];
 		baiduLocation.startPosition();
-		baiduLocation.cusomterCallback = cb;
 	}else if(os=='ios'){
 		if(!$xlocation._gpsPool[identify]) $xlocation._gpsPool[identify] = new Gps();
 		var position = $xlocation._gpsPool[identify];
 		
-		$xlocation._gpsCallbackPool[identify] = function(){			
-			cb&&cb(position.isSuccess()?{
-				lat : position.latitude,
-				lng : position.longitude,
-				locationtime : position.locationtime,
-				statuscode : position.statuscode,
-				accuracy : position.accuracy
-			}:null);
+		$xlocation._gpsCallbackPool[identify] = function(){
+			var positionRs = $u.extend($xlocation._locationModal, position.isSuccess()?position:null);
+			positionRs.lng = positionRs.longitude;
+			positionRs.lat = positionRs.latitude;
+			
+			
+			if(!$xlocation._locationPool[identify]) $xlocation._locationPool[identify] = new Location();
+			var location = $xlocation._locationPool[identify];
+			
+			$xlocation._locationCallbackPool[identify] = function(){
+				var locationRs = $u.extend($xlocation._locationModal, location.isSuccess()?location:null);
+				locationRs.lng = locationRs.longitude;
+				locationRs.lat = locationRs.latitude;
+				
+				cb&&cb(location.isSuccess()?$u.extend(positionRs, locationRs):positionRs);
+				
+				delete $xlocation._locationPool[identify];
+				delete $xlocation._locationCallbackPool[identify];
+			};
+			
+			location.onCallback = $xlocation._locationCallbackPool[identify];
+			location.setTimeout(options.timeout);			
+			position.isSuccess()?(location.startGetLocationInfo(positionRs.lat,positionRs.lng)):(location.startGetLocationInfobyCellId(Util.getCellIdInfo()));
+			
 			delete $xlocation._gpsPool[identify];
 			delete $xlocation._gpsCallbackPool[identify];
 		};
@@ -71,6 +87,7 @@ $xlocation.get = function(cb){
 		position.onCallback = $xlocation._gpsCallbackPool[identify];
 	    position.setTimeout(options.timeout);
 	    position.startPosition();
+
 	}
 };
 //http://developer.baidu.com/map/index.php?title=webapi/guide/webservice-geocoding

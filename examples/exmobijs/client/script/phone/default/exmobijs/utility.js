@@ -1,6 +1,6 @@
 ﻿/*
 *	ExMobi4.0 JS 框架之 通用操作类utility.js(依赖base.js)
-*	Version	:	1.1.0
+*	Version	:	1.1.1
 */
 var $u = {
 	//批处理
@@ -176,6 +176,13 @@ var $u = {
 				c = a.charCodeAt();  
 				return '\\u00' + Math.floor(c / 16).toString(16) + (c % 16).toString(16);  
 			}) + '"';
-	}
+	},
+	extend:function(m,o){
+		if(!o) return m;
+		for(var k in m){
+			if(typeof o[k] != 'undefined') m[k] = o[k];
+		}
+		return m;
+	},
 	
 };
