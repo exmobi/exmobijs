@@ -1,6 +1,6 @@
 ﻿/*
 *	ExMobi4.0 JS 框架之 webview桥接类bridge.js(依赖app.js)
-*	Version	:	1.2.0
+*	Version	:	1.2.2
 */
 var $native = {};
 
@@ -48,13 +48,13 @@ $native.openWebView = function(href, el){
 	if(!href) return;
 	var _this = $(el);
 	var isNew = _this.attr('target')!="_self";
-    var transition = _this.data('transition'); 
-	
+    var transition = _this.data('transition'); 	
 	if(href.indexOf("#")==0){
-		href = 'res:page/html/'+href.replace("#","")+'.html';
+		href = $native.getResPath(location.href, A.settings.basePagePath)+'/'+href.replace("#","")+'.html';
 	}else if(href.indexOf('res')<0){
-		href = 'res:page/html/'+href;
+		href = $native.getResPath(location.href, A.settings.basePagePath)+'/'+href;
 	}
+	
 	var urlOpt = $util.parseResURL(href);
 
 	var opt = {
@@ -66,6 +66,29 @@ $native.openWebView = function(href, el){
 	};
 
 	$native.open(opt);
+};
+
+$native.getResPath = function(allPath, referPath){
+	try{
+		var allPathArr = allPath.split("/");
+		var referPathArr = referPath.split("/");	
+		allPathArr.length = allPathArr.length - (referPathArr[0]==".."?2:1);
+		var splitTag = "/apps/"+ClientUtil.getAppId()+"/page/";
+		return "res:page/"+allPathArr.join("/").split(splitTag)[1];
+	}catch(e){
+		return "res:page/html";
+	}	
+	/*
+	var allPathArr = allPath.split("/");
+	var referPathArr = referPath.split("/");	
+	allPathArr.length = allPathArr.length - (referPathArr[0]==".."?2:1);
+	var relativePathArr = nativePage.getAdapterUrlPath("res:page").split("/");
+	var returnPathArr = [];
+	for(var i=relativePathArr.length;i<allPathArr.length;i++){
+		returnPathArr.push(allPathArr[i]);
+	}
+	return "res:page/"+returnPathArr.join("/");
+	*/
 };
 
 $native.open = function(opt){//opt={url:'',id:''}
@@ -211,6 +234,29 @@ $native.app.getAppSetting = function(){
 	
 };
 
+$native.session = function(){
+	if(arguments.length==1){
+		try{
+			return JSON.parse(ExMobiWindow.getStringSession(arguments[0]));
+		}catch(e){
+			return ExMobiWindow.getStringSession(arguments[0]);
+		}
+		
+	}else if(arguments.length==2){
+		var v = arguments[1]||'';
+		try{
+			return ExMobiWindow.setStringSession(arguments[0], JSON.stringify(v));
+		}catch(e){
+			return ExMobiWindow.setStringSession(arguments[0], v);
+		}
+		
+	}else{
+		return null;
+	}
+
+};
+
+
 
 var $util = {};
 
@@ -249,7 +295,7 @@ $util.htmlTemplate = function(opt){//opt={url:'',id:''}
 	html.push('</script>');
 	html.push('</head>');
 	//html.push('<body style="margin:0px;padding:0px;" onload="$browser.bridgeLoad(&apos;'+url+'&apos;)" onstart="$browser.bridgeStart()" onstop="$browser.bridgeStop()" ondestroy="$browser.bridgeDestroy()">');
-	html.push('<body style="margin:0px;padding:0px;" onload="$browser.bridgeLoad()" onstart="$browser.bridgeStart()" onstop="$browser.bridgeStop()" ondestroy="$browser.bridgeDestroy()">');
+	html.push('<body style="margin:0px;padding:0px;">');
 	html.push('<webview id="browser" url="'+url+'" backmonitor="true"/>');// backMonitor="true"
 	//html.push('<browser id="browser" url="'+url+'" action="true" adapter="false"/>');
 	html.push('</body>');
